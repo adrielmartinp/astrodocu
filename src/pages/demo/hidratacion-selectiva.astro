@@ -1,0 +1,99 @@
+---
+import { Layout } from "../../layouts";
+import { Counter as CounterReact } from "../../components/react";
+---
+
+<Layout>
+  <main class="container mx-auto px-4 pb-16 max-w-7xl">
+    <div class="min-h-dvh flex items-center justify-center">
+      <div class="text-center mb-20 space-y-6">
+        <div class="inline-block">
+          <div
+            class="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent"
+          >
+            <h1 class="text-6xl md:text-7xl font-bold tracking-tight">
+              Hidratación Selectiva
+            </h1>
+          </div>
+        </div>
+        <p
+          class="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+        >
+          Astro solo carga JavaScript cuando realmente lo necesitas
+        </p>
+
+        <div
+          class="max-w-4xl mx-auto mt-12 p-8 bg-card border border-border rounded-2xl text-left"
+        >
+          <h2 class="text-2xl font-semibold mb-4 text-foreground">
+            🎯 Demo: <code class="text-primary">client:visible</code>
+          </h2>
+
+          <div
+            class="space-y-4 text-base text-muted-foreground leading-relaxed"
+          >
+            <p>
+              Este contador de React está configurado con la directiva <code
+                class="px-2 py-1 bg-muted rounded text-foreground font-semibold"
+                >client:visible</code
+              >. Esto significa que:
+            </p>
+
+            <ul class="list-disc list-inside space-y-2 ml-4">
+              <li>
+                El componente se renderiza como HTML estático inicialmente
+              </li>
+              <li>
+                El JavaScript <strong>NO se descarga</strong> al cargar la página
+              </li>
+              <li>
+                Solo cuando haces <strong>scroll</strong> y el contador entra en
+                el viewport...
+              </li>
+              <li>¡Astro carga el JS y lo hace interactivo!</li>
+            </ul>
+
+            <div
+              class="mt-6 p-4 bg-primary/10 border border-primary/20 rounded-lg"
+            >
+              <p class="text-sm font-semibold text-primary mb-2">
+                🔍 Pruébalo tú mismo:
+              </p>
+              <ol class="text-sm space-y-1 ml-4 list-decimal list-inside">
+                <li>
+                  Abre las DevTools (F12) → pestaña <strong>Network</strong>
+                </li>
+                <li>Filtra por <strong>JS</strong></li>
+                <li>
+                  Recarga la página y observa: <em
+                    >no se carga ningún JavaScript del contador</em
+                  >
+                </li>
+                <li>Ahora haz scroll hacia abajo...</li>
+                <li>
+                  ¡Verás cómo se descarga el JS justo cuando lo necesitas! ⚡
+                </li>
+              </ol>
+            </div>
+
+            <p class="mt-6 text-foreground font-medium">
+              Esto es lo que hace a Astro tan rápido: <strong
+                >JavaScript bajo demanda</strong
+              >, solo cuando y donde lo necesitas.
+            </p>
+          </div>
+        </div>
+        <div class="text-center mt-8">
+          <p class="text-muted-foreground text-lg">
+            👇 Haz scroll y observa la consola de Network
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <section class="flex justify-end items-center flex-col">
+      <hr class="h-1 w-3/4 md:w-2/4 pb-6 text-muted-foreground opacity-50" />
+      <CounterReact client:visible />
+    </section>
+  </main>
+</Layout>

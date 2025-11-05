@@ -1,0 +1,31 @@
+---
+import { ChevronLeft, ChevronRight } from "@lucide/astro";
+
+interface Props {
+  url: string | null;
+  label: string;
+  iconDirection: "right" | "left";
+}
+
+const { url, label, iconDirection } = Astro.props;
+
+const hasUrl = Boolean(url);
+---
+
+{
+  hasUrl ? (
+    <a href={url}>
+      <button class="inline-flex items-center gap-2 bg-transparent px-6 py-4 rounded-xl font-semibold cursor-pointer">
+        {iconDirection === "left" ? (
+          <ChevronLeft class="w-4 h-4" />
+        ) : (
+          <ChevronRight class="w-4 h-4" />
+        )}
+
+        {label}
+      </button>
+    </a>
+  ) : (
+    <div class="w-24" />
+  )
+}

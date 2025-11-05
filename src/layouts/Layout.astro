@@ -1,0 +1,31 @@
+---
+import "../styles/global.css";
+
+import { Header } from "../components";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Astro Docu</title>
+  </head>
+  <body>
+    <div class="min-h-screen bg-linear-to-br from-background to-secondary/30">
+      <Header />
+      <slot />
+    </div>
+  </body>
+</html>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>

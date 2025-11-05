@@ -1,0 +1,81 @@
+---
+import { ChevronRight } from "@lucide/astro";
+import { sortArray } from "complete-js-utils";
+
+import { Layout } from "../layouts";
+import { DocuCard } from "../components";
+import { getCollection } from "astro:content";
+
+const allDocu = (await getCollection("docu")).map((doc) => doc.data);
+const allDocuSorted = sortArray(allDocu, "number");
+
+const getUrlDocu = (url: string) => `/docu/${url}`;
+---
+
+<Layout>
+  <main class="container mx-auto px-4 py-16 max-w-7xl">
+    {/* Hero Section */}
+    <div class="text-center mb-20 space-y-6">
+      <div class="inline-block">
+        <div
+          class="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent"
+        >
+          <h1 class="text-6xl md:text-7xl font-bold tracking-tight">
+            Aprende Astro
+          </h1>
+        </div>
+      </div>
+      <p
+        class="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+      >
+        Domina el framework web moderno que combina velocidad, flexibilidad y
+        una experiencia de desarrollo excepcional
+      </p>
+      <div class="flex items-center justify-center gap-4 pt-4">
+        <a
+          href={getUrlDocu(allDocuSorted[0].url)}
+          class="inline-flex items-center gap-2 bg-linear-to-r from-primary to-accent text-primary-foreground px-8 py-4 rounded-xl font-semibold hover:opacity-90 transition-opacity shadow-lg hover:shadow-xl"
+        >
+          Comenzar Ahora
+          <ChevronRight class="w-5 h-5" />
+        </a>
+      </div>
+    </div>
+
+    {/* Lessons Grid */}
+    <div class="space-y-4">
+      <h2 class="text-3xl font-bold mb-8 text-center">Contenido del Curso</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {allDocuSorted.map((docu) => <DocuCard itemDocu={docu} />)}
+      </div>
+    </div>
+
+    {/* Stats Section */}
+    <div class="mt-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-card border border-border rounded-2xl p-8 text-center">
+        <div
+          class="text-4xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent"
+        >
+          {allDocu.length}
+        </div>
+        <div class="text-muted-foreground mt-2">Lecciones Completas</div>
+      </div>
+      <div class="bg-card border border-border rounded-2xl p-8 text-center">
+        <div
+          class="text-4xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent"
+        >
+          ~2h
+        </div>
+        <div class="text-muted-foreground mt-2">Duración Total</div>
+      </div>
+      <div class="bg-card border border-border rounded-2xl p-8 text-center">
+        <div
+          class="text-4xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent"
+        >
+          100%
+        </div>
+        <div class="text-muted-foreground mt-2">Gratis</div>
+      </div>
+    </div>
+  </main>
+</Layout>

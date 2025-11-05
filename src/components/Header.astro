@@ -1,0 +1,188 @@
+---
+import { Github, Menu, X } from "@lucide/astro";
+import { sortArray } from "complete-js-utils";
+
+import { getCollection } from "astro:content";
+
+const allDocu = (await getCollection("docu")).map((doc) => doc.data);
+const allDocuSorted = sortArray(allDocu, "number");
+
+const firstDocu = allDocuSorted.length > 0 ? allDocuSorted[0] : null;
+
+const currentPath = Astro.url.pathname;
+const isInDocuRoute = currentPath.startsWith("/docu");
+
+const linksHeader = [
+  { route: "/", label: "Inicio" },
+  {
+    route: `/docu/${firstDocu?.url}`,
+    label: firstDocu?.title,
+    hidden: !firstDocu || isInDocuRoute,
+  },
+  { route: "/demo/hidratacion-selectiva", label: "Demo" },
+  {
+    route: "https://docs.astro.build/es/tutorial/0-introduction/",
+    label: "Recursos",
+    openOut: true,
+  },
+];
+---
+
+<header
+  class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60"
+>
+  <div class="container mx-auto flex h-16 items-center justify-between px-4">
+    <a href="/" class="flex items-center gap-2 font-bold text-xl">
+      <div
+        class="w-8 h-8 bg-linear-to-br from-primary to-accent rounded-lg flex items-center justify-center text-primary-foreground"
+      >
+        A
+      </div>
+      <span
+        class="bg-linear-to-r from-primary to-accent bg-clip-text text-transparent"
+        >Astro Docu</span
+      >
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex items-center gap-6">
+      {
+        linksHeader.map((link) => {
+          if (!link.hidden) {
+            return (
+              <a
+                href={link.route}
+                target={link.openOut ? "_blank" : "_self"}
+                class="text-sm font-medium hover:text-primary transition-colors"
+              >
+                {link.label}
+              </a>
+            );
+          }
+        })
+      }
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <a
+        href="https://github.com/adrielmartinp/astrodocu"
+        target="_blank"
+        class="hover:text-primary transition-colors"
+        aria-label="GitHub"
+      >
+        <Github class="w-5 h-5" />
+      </a>
+
+      <!-- Mobile Menu Button -->
+      <button
+        type="button"
+        id="mobile-menu-button"
+        class="md:hidden p-2 hover:bg-muted rounded-lg transition-colors"
+        aria-label="Toggle menu"
+      >
+        <Menu id="menu-icon" class="w-6 h-6" />
+        <X id="close-icon" class="w-6 h-6 hidden" />
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <nav
+    id="mobile-menu"
+    class="md:hidden fixed inset-x-0 top-16 bg-background border-b border-border shadow-lg transform -translate-y-full opacity-0 transition-all duration-300 ease-in-out pointer-events-none"
+  >
+    <div class="container mx-auto px-4 py-4 flex flex-col gap-4">
+      {
+        linksHeader.map((link, index) => {
+          if (!link.hidden) {
+            return (
+              <a
+                href={link.route}
+                target={link.openOut ? "_blank" : "_self"}
+                class={`text-base font-medium hover:text-primary transition-colors py-2 ${index !== linksHeader.length - 1 ? "border-b border-border" : ""}`}
+              >
+                {link.label}
+              </a>
+            );
+          }
+        })
+      }
+    </div>
+  </nav>
+</header>
+
+<script is:inline>
+  document.addEventListener("DOMContentLoaded", function () {
+    const mobileMenuButton = document.getElementById("mobile-menu-button");
+    const mobileMenu = document.getElementById("mobile-menu");
+    const menuIcon = document.getElementById("menu-icon");
+    const closeIcon = document.getElementById("close-icon");
+
+    let isMenuOpen = false;
+
+    function closeMenu() {
+      isMenuOpen = false;
+      mobileMenu.classList.add(
+        "-translate-y-full",
+        "opacity-0",
+        "pointer-events-none"
+      );
+      mobileMenu.classList.remove(
+        "translate-y-0",
+        "opacity-100",
+        "pointer-events-auto"
+      );
+      menuIcon.classList.remove("hidden");
+      closeIcon.classList.add("hidden");
+    }
+
+    function openMenu() {
+      isMenuOpen = true;
+      mobileMenu.classList.remove(
+        "-translate-y-full",
+        "opacity-0",
+        "pointer-events-none"
+      );
+      mobileMenu.classList.add(
+        "translate-y-0",
+        "opacity-100",
+        "pointer-events-auto"
+      );
+      menuIcon.classList.add("hidden");
+      closeIcon.classList.remove("hidden");
+    }
+
+    if (mobileMenuButton && mobileMenu && menuIcon && closeIcon) {
+      // Toggle menu on button click
+      mobileMenuButton.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (isMenuOpen) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener("click", function (e) {
+        if (
+          isMenuOpen &&
+          !mobileMenu.contains(e.target) &&
+          !mobileMenuButton.contains(e.target)
+        ) {
+          closeMenu();
+        }
+      });
+
+      // Close menu when clicking on a link
+      const mobileLinks = mobileMenu.querySelectorAll("a");
+      mobileLinks.forEach(function (link) {
+        link.addEventListener("click", function () {
+          closeMenu();
+        });
+      });
+    }
+  });
+</script>
