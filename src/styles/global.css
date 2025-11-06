@@ -223,7 +223,7 @@
 
   /* Tables */
   .prose table {
-    @apply w-full mb-4;
+    @apply w-full mb-4 block overflow-x-auto;
     border-collapse: collapse;
   }
 

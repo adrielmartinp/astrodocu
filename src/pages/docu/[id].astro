@@ -37,8 +37,10 @@ const hasNext = Boolean(nextUrlPath);
   <div
     class="sticky top-16 z-40 w-full border-b border-border/40 bg-card/95 backdrop-blur supports-backdrop-filter:bg-card/60"
   >
-    <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex-1">
+    <div
+      class="container mx-auto px-4 h-16 flex items-center justify-between gap-4"
+    >
+      <div class="shrink-0">
         <TopNavigationLesson
           url={previousUrlPath}
           label="Anterior"
@@ -46,14 +48,14 @@ const hasNext = Boolean(nextUrlPath);
         />
       </div>
 
-      <div class="flex-1 text-center">
-        <div class="text-sm text-muted-foreground">
+      <div class="flex-1 min-w-0 text-center">
+        <div class="text-sm text-muted-foreground truncate">
           Lección {number} de {numberOfLessons}
         </div>
-        <div class="font-semibold text-sm">{title}</div>
+        <div class="font-semibold text-sm truncate">{title}</div>
       </div>
 
-      <div class="flex-1 flex justify-end">
+      <div class="shrink-0">
         <TopNavigationLesson
           url={nextUrlPath}
           label="Siguiente"
@@ -73,7 +75,7 @@ const hasNext = Boolean(nextUrlPath);
     <div class="flex items-center justify-between mt-8">
       <a href={hasPrevious ? previousUrlPath : "/"}>
         <button
-          class="inline-flex items-center gap-2 bg-transparent px-6 py-4 rounded-xl font-semibold cursor-pointer"
+          class="inline-flex items-center gap-2 bg-transparent px-4 md:px-6 py-3 md:py-4 rounded-xl font-semibold cursor-pointer"
         >
           <ChevronLeft class="w-4 h-4" />
           {hasPrevious ? "Lección Anterior" : "Volver al Inicio"}
@@ -82,7 +84,7 @@ const hasNext = Boolean(nextUrlPath);
 
       <a href={hasNext ? nextUrlPath : "/"}>
         <button
-          class="inline-flex items-center gap-2 bg-linear-to-r from-primary to-accent text-primary-foreground px-6 py-4 rounded-xl font-semibold cursor-pointer"
+          class="inline-flex items-center gap-2 bg-linear-to-r from-primary to-accent text-primary-foreground px-4 md:px-6 py-3 md:py-4 rounded-xl font-semibold cursor-pointer"
         >
           {hasNext ? "Siguiente Lección" : "Completar Curso"}
           <ChevronRight class="w-4 h-4" />
